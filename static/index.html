@@ -1,0 +1,129 @@
+
+<!-- this file just a atlas demo, change whatever you want and make yourself feel at home :) -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bromine Network | Atlas</title>
+  <script src="/atlas.register.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #111;
+      color: #ccc;
+      font-family: monospace;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrap {
+      width: 420px;
+      padding: 0 1rem;
+    }
+
+    h1 {
+      font-size: 1.1rem;
+      font-weight: normal;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      letter-spacing: 0.02em;
+    }
+
+    h1 span {
+      color: #555;
+      font-size: 0.85rem;
+      margin-left: 0.4rem;
+    }
+
+    form {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    input {
+      flex: 1;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      color: #ddd;
+      font-family: monospace;
+      font-size: 0.875rem;
+      padding: 0.5rem 0.75rem;
+      outline: none;
+    }
+
+    input:focus { border-color: #444; }
+    input::placeholder { color: #444; }
+
+    button {
+      background: #222;
+      border: 1px solid #2a2a2a;
+      color: #aaa;
+      font-family: monospace;
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    button:hover { background: #2a2a2a; color: #fff; }
+
+    .links {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      font-size: 0.75rem;
+    }
+
+    .links a {
+      color: #444;
+      text-decoration: none;
+    }
+
+    .links a:hover { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>atlas <span>by bromine network</span></h1>
+    <form id="f">
+      <input id="u" type="text" placeholder="search or enter a url." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </form>
+    <div class="links">
+      <a href="https://github.com/brominenetwork/Atlas" target="_blank">github</a>
+      <a href="https://discord.gg/unblockings" target="_blank">discord</a>
+      <a href="https://t.me/@qatual" target="_blank">telegram</a>
+    </div>
+  </div>
+  <script>
+    !function(){
+      function enc(u){
+        try{return btoa(encodeURIComponent(u)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,"")}
+        catch(e){return null}
+      }
+      function norm(s){
+        s=s.trim();
+        if(!s)return null;
+        if(/^https?:\/\//i.test(s)){
+          try{new URL(s);return s}catch(e){}
+          return null;
+        }
+        if(/\.|^localhost(:\d+)?$/.test(s)){
+          try{new URL("https://"+s);return"https://"+s}catch(e){}
+        }
+        return"https://duckduckgo.com/?q="+encodeURIComponent(s);
+      }
+      document.getElementById("f").onsubmit=function(e){
+        e.preventDefault();
+        var v=document.getElementById("u").value;
+        var n=norm(v);if(!n)return;
+        var c=enc(n);if(!c)return;
+        location.href="/atlas/"+c;
+      };
+    }();
+  </script>
+</body>
+</html>
