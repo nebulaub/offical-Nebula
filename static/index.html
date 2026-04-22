@@ -12,17 +12,16 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #000; 
+      background: #000;
       color: #ccc;
       font-family: monospace;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden; 
+      overflow: hidden;
     }
 
-   
     #starfield {
       position: fixed;
       top: 0;
@@ -36,7 +35,7 @@
       width: 420px;
       padding: 0 1rem;
       position: relative;
-      z-index: 1; 
+      z-index: 1;
     }
 
     h1 {
@@ -60,7 +59,7 @@
 
     input {
       flex: 1;
-      background: rgba(26, 26, 26, 0.9); 
+      background: rgba(26, 26, 26, 0.9);
       border: 1px solid #2a2a2a;
       color: #ddd;
       font-family: monospace;
@@ -101,7 +100,6 @@
 </head>
 <body>
 
-
   <canvas id="starfield"></canvas>
 
   <div class="wrap">
@@ -115,11 +113,10 @@
   </div>
 
   <script>
- 
+
     const canvas = document.getElementById('starfield');
     const ctx = canvas.getContext('2d');
     let stars = [];
-    let shootingStar = null;
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -128,73 +125,38 @@
     window.addEventListener('resize', resize);
     resize();
 
-   
-    for (let i = 0; i < 350; i++) {
+    for (let i = 0; i < 400; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 1.5,
-        opacity: Math.random(),
-        speed: 0.01 + Math.random() * 0.03
+        opacity: Math.random()
       });
     }
 
-    function createShootingStar() {
-      shootingStar = {
-        x: Math.random() * canvas.width,
-        y: 0,
-        len: Math.random() * 80 + 20,
-        speed: Math.random() * 10 + 5,
-        opacity: 1
-      };
-    }
-
     function draw() {
-   
+    
       const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
       grad.addColorStop(0, '#0a0f1e');
       grad.addColorStop(1, '#000');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-     
       stars.forEach(star => {
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
 
-      
         star.opacity += (Math.random() - 0.5) * 0.04;
         if (star.opacity < 0.1) star.opacity = 0.1;
         if (star.opacity > 1) star.opacity = 1;
       });
 
-     
-      if (!shootingStar && Math.random() < 0.005) {
-        createShootingStar();
-      }
-
-      if (shootingStar) {
-        ctx.strokeStyle = `rgba(255, 255, 255, ${shootingStar.opacity})`;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(shootingStar.x, shootingStar.y);
-        ctx.lineTo(shootingStar.x - shootingStar.len, shootingStar.y + shootingStar.len);
-        ctx.stroke();
-
-        shootingStar.x += shootingStar.speed;
-        shootingStar.y += shootingStar.speed;
-        shootingStar.opacity -= 0.01;
-
-        if (shootingStar.opacity <= 0 || shootingStar.y > canvas.height) {
-          shootingStar = null;
-        }
-      }
-
       requestAnimationFrame(draw);
     }
     draw();
+
 
     !function(){
       function enc(u){
