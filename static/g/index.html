@@ -4,22 +4,52 @@
        <link rel="icon" type="i/x-icon" href="/i/nebula.png">
     
 <body bgcolor="black" >
-<header>
-  <nav class="navbar">
-    <!-- Logo section -->
-    <div class="nav-logo">
-      <a href="index.html">
-        <img src="your-logo.png" alt="Game Logo">
-      </a>
-    </div>
-    
-    <!-- Navigation links -->
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="/g/index.html">Games</a></li>
-    </ul>
-  </nav>
-</header>
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Purple navigation bar styling [1] */
+    .navbar {
+      background-color: #6a0dad;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: sticky; /* Keeps menu visible on scroll [1] */
+      top: 0;
+      z-index: 1000;
+    }
+    .nav-logo img { height: 50px; }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: sans-serif;
+    }
+    .nav-links a:hover { color: #bc13fe; } /* Neon purple hover [1] */
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <a href="index.html"><img src="nebula-logo.png" alt="Game Logo"></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="/g/index.html">Games</a></li>
+      </ul>
+    </nav>
+  </header>
+</body>
+</html>
 </body>
     <title>
       Nebula learning
@@ -38,10 +68,7 @@ h1 {text-align: center;}
 p {text-align: center;}
 div {text-align: center;}
 </style>
-
-       
-
-      
+     
     </body>
   
 
