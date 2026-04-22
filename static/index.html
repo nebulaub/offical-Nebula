@@ -204,7 +204,7 @@
         if(/\.|^localhost(:\d+)?$/.test(s)){
           try{new URL("https://"+s);return"https://"+s}catch(e){}
         }
-        return"https://duckduckgo.com"+encodeURIComponent(s);
+        return"https://duckduckgo.com?q="+encodeURIComponent(s);
       }
       document.getElementById("f").onsubmit=function(e){
         e.preventDefault();
