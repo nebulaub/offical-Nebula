@@ -86,8 +86,49 @@
 
     .links a:hover { color: #888; }
   </style>
+  <style>
+
+    .navbar {
+      background-color: #320847;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: sticky; 
+      top: 0;
+      z-index: 1000;
+    }
+    .nav-logo img { height: 50px; }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-family: sans-serif;
+    }
+    .nav-links a:hover { color: #bc13fe; } 
+  </style>
 </head>
 <body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-logo">
+        <a href="/index.html">
+          <img src="./g/nebula-logo.png/" 
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="./g/index.html">Games</a></li>
+      </ul>
+    </nav>
+  </header>
   <div class="wrap">
     <h1>Nebula <span>powered by atlas</span></h1>
     <form id="f">
