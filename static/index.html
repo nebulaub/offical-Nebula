@@ -113,29 +113,40 @@
   </div>
 
   <script>
-
     const canvas = document.getElementById('starfield');
     const ctx = canvas.getContext('2d');
     let stars = [];
+    const mouse = { x: -1000, y: -1000 };
 
     function resize() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      initStars(); 
     }
-    window.addEventListener('resize', resize);
-    resize();
 
-    for (let i = 0; i < 400; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 1.5,
-        opacity: Math.random()
-      });
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 400; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        stars.push({
+          x: x,
+          y: y,
+          originX: x,
+          originY: y,
+          size: Math.random() * 1.5,
+          opacity: Math.random()
+        });
+      }
     }
 
     function draw() {
-    
       const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
       grad.addColorStop(0, '#0a0f1e');
       grad.addColorStop(1, '#000');
@@ -143,11 +154,29 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       stars.forEach(star => {
+   
+        const dx = mouse.x - star.x;
+        const dy = mouse.y - star.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const force = (100 - distance) / 100; 
+
+        if (distance < 100) {
+          const angle = Math.atan2(dy, dx);
+          star.x -= Math.cos(angle) * force * 5;
+          star.y -= Math.sin(angle) * force * 5;
+        } else {
+       
+          star.x += (star.originX - star.x) * 0.05;
+          star.y += (star.originY - star.y) * 0.05;
+        }
+
+       
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
 
+        // Twinkle
         star.opacity += (Math.random() - 0.5) * 0.04;
         if (star.opacity < 0.1) star.opacity = 0.1;
         if (star.opacity > 1) star.opacity = 1;
@@ -155,9 +184,11 @@
 
       requestAnimationFrame(draw);
     }
+
+    resize();
     draw();
 
-
+-
     !function(){
       function enc(u){
         try{return btoa(encodeURIComponent(u)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,"")}
