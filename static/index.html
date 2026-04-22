@@ -162,12 +162,12 @@
 
         if (distance < 100) {
           const angle = Math.atan2(dy, dx);
-          star.x -= Math.cos(angle) * force * 3;
-          star.y -= Math.sin(angle) * force * 3;
+          star.x -= Math.cos(angle) * force * 2;
+          star.y -= Math.sin(angle) * force *2;
         } else {
        
-          star.x += (star.originX - star.x) * 0.05;
-          star.y += (star.originY - star.y) * 0.05;
+          star.x += (star.originX - star.x) * 0.005;
+          star.y += (star.originY - star.y) * 0.005;
         }
 
        
