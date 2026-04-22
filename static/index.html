@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  
     <style>
     
         body, html {
@@ -15,18 +14,18 @@
             background-color: #000;
         }
 
-     
+   
         #starfield {
             position: fixed; 
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;    
+            z-index: -1;   
             display: block;
         }
 
-       
+        /* YOUR CONTENT LAYER */
         .main-content {
             position: relative;
             z-index: 1; 
@@ -39,16 +38,15 @@
 </head>
 <body>
 
-    <!-- This is your star layer -->
+ 
     <canvas id="starfield"></canvas>
-
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nebula learning</title>
-         <link rel="icon" type="i/x-icon" href="/i/nebula.png">
+  <link rel="icon" type="i/x-icon" href="/i/nebula.png">
   
   <script src="/atlas.register.js"></script>
   
@@ -56,18 +54,31 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #111;
+      background: #000;
       color: #ccc;
       font-family: monospace;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden; 
+    }
+
+ 
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; 
     }
 
     .wrap {
       width: 420px;
       padding: 0 1rem;
+      position: relative;
+      z-index: 1; 
     }
 
     h1 {
@@ -91,7 +102,7 @@
 
     input {
       flex: 1;
-      background: #1a1a1a;
+      background: rgba(26, 26, 26, 0.8); 
       border: 1px solid #2a2a2a;
       color: #ddd;
       font-family: monospace;
@@ -131,17 +142,67 @@
   </style>
 </head>
 <body>
+
+  <!-- Star Background Layer -->
+  <canvas id="starfield"></canvas>
+
   <div class="wrap">
     <h1>Nebula<span>powered by atlas</span></h1>
     <form id="f">
       <input id="u" type="text" placeholder="search or enter a url." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </form>
     <div class="links">
-     
       <a href="/g/index.html">games</a>
     </div>
   </div>
+
   <script>
+ 
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+
+    for (let i = 0; i < 400; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.5,
+        opacity: Math.random()
+      });
+    }
+
+    function drawStars() {
+      // Dark space gradient
+      const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+      grad.addColorStop(0, '#0a0f1a');
+      grad.addColorStop(1, '#000');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(star => {
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+
+   
+        star.opacity += (Math.random() - 0.5) * 0.04;
+        if (star.opacity < 0.1) star.opacity = 0.1;
+        if (star.opacity > 1) star.opacity = 1;
+      });
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+ 
     !function(){
       function enc(u){
         try{return btoa(encodeURIComponent(u)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,"")}
@@ -168,6 +229,10 @@
       };
     }();
   </script>
+</body>
+</html>
+
+
 
     <script>
         const canvas = document.getElementById('starfield');
@@ -192,21 +257,21 @@
         }
 
         function draw() {
-         
+           
             const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
             grad.addColorStop(0, '#050a14');
             grad.addColorStop(1, '#000');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw and update stars
+       
             stars.forEach(star => {
                 ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Twinkle effect
+        
                 star.opacity += (Math.random() - 0.5) * 0.05;
                 if (star.opacity < 0.1) star.opacity = 0.1;
                 if (star.opacity > 1) star.opacity = 1;
@@ -218,4 +283,3 @@
     </script>
 </body>
 </html>
-
