@@ -2,6 +2,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+    
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+        }
+
+     
+        #starfield {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;    
+            display: block;
+        }
+
+       
+        .main-content {
+            position: relative;
+            z-index: 1; 
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+            padding-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This is your star layer -->
+    <canvas id="starfield"></canvas>
+
+
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nebula learning</title>
@@ -125,25 +168,6 @@
       };
     }();
   </script>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background-color: #000; 
-        }
-        canvas { display: block; }
-    </style>
-</head>
-<body>
-    <canvas id="starfield"></canvas>
 
     <script>
         const canvas = document.getElementById('starfield');
@@ -151,7 +175,6 @@
         let stars = [];
         const numStars = 400;
 
-      
         function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -159,48 +182,40 @@
         window.addEventListener('resize', resize);
         resize();
 
-
         for (let i = 0; i < numStars; i++) {
             stars.push({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 size: Math.random() * 1.5,
-                opacity: Math.random(),
-                twinkleSpeed: Math.random() * 0.02
+                opacity: Math.random()
             });
         }
 
         function draw() {
-          
-            const gradient = ctx.createRadialGradient(
-                canvas.width / 2, canvas.height / 2, 0, 
-                canvas.width / 2, canvas.height / 2, canvas.width
-            );
-            gradient.addColorStop(0, '#020b1a');
-            gradient.addColorStop(1, '#000000');
-            ctx.fillStyle = gradient;
+         
+            const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+            grad.addColorStop(0, '#050a14');
+            grad.addColorStop(1, '#000');
+            ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // Draw and update stars
             stars.forEach(star => {
-              
                 ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
                 ctx.beginPath();
                 ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
                 ctx.fill();
 
+                // Twinkle effect
                 star.opacity += (Math.random() - 0.5) * 0.05;
                 if (star.opacity < 0.1) star.opacity = 0.1;
                 if (star.opacity > 1) star.opacity = 1;
             });
 
-           
             requestAnimationFrame(draw);
         }
-
         draw();
     </script>
 </body>
 </html>
 
-</body>
-</html>
