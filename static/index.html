@@ -1,48 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-    <style>
-    
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-        }
-
-   
-        #starfield {
-            position: fixed; 
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;   
-            display: block;
-        }
-
-        /* YOUR CONTENT LAYER */
-        .main-content {
-            position: relative;
-            z-index: 1; 
-            color: white;
-            font-family: sans-serif;
-            text-align: center;
-            padding-top: 100px;
-        }
-    </style>
-</head>
-<body>
-
- 
-    <canvas id="starfield"></canvas>
-<!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nebula learning</title>
@@ -54,7 +12,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #000;
+      background: #000; 
       color: #ccc;
       font-family: monospace;
       height: 100vh;
@@ -64,7 +22,7 @@
       overflow: hidden; 
     }
 
- 
+   
     #starfield {
       position: fixed;
       top: 0;
@@ -102,7 +60,7 @@
 
     input {
       flex: 1;
-      background: rgba(26, 26, 26, 0.8); 
+      background: rgba(26, 26, 26, 0.9); 
       border: 1px solid #2a2a2a;
       color: #ddd;
       font-family: monospace;
@@ -143,7 +101,7 @@
 </head>
 <body>
 
-  <!-- Star Background Layer -->
+
   <canvas id="starfield"></canvas>
 
   <div class="wrap">
@@ -161,6 +119,7 @@
     const canvas = document.getElementById('starfield');
     const ctx = canvas.getContext('2d');
     let stars = [];
+    let shootingStar = null;
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -169,40 +128,74 @@
     window.addEventListener('resize', resize);
     resize();
 
-
-    for (let i = 0; i < 400; i++) {
+   
+    for (let i = 0; i < 350; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         size: Math.random() * 1.5,
-        opacity: Math.random()
+        opacity: Math.random(),
+        speed: 0.01 + Math.random() * 0.03
       });
     }
 
-    function drawStars() {
-      // Dark space gradient
+    function createShootingStar() {
+      shootingStar = {
+        x: Math.random() * canvas.width,
+        y: 0,
+        len: Math.random() * 80 + 20,
+        speed: Math.random() * 10 + 5,
+        opacity: 1
+      };
+    }
+
+    function draw() {
+   
       const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
-      grad.addColorStop(0, '#0a0f1a');
+      grad.addColorStop(0, '#0a0f1e');
       grad.addColorStop(1, '#000');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+     
       stars.forEach(star => {
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
 
-   
+      
         star.opacity += (Math.random() - 0.5) * 0.04;
         if (star.opacity < 0.1) star.opacity = 0.1;
         if (star.opacity > 1) star.opacity = 1;
       });
-      requestAnimationFrame(drawStars);
-    }
-    drawStars();
 
- 
+     
+      if (!shootingStar && Math.random() < 0.005) {
+        createShootingStar();
+      }
+
+      if (shootingStar) {
+        ctx.strokeStyle = `rgba(255, 255, 255, ${shootingStar.opacity})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(shootingStar.x, shootingStar.y);
+        ctx.lineTo(shootingStar.x - shootingStar.len, shootingStar.y + shootingStar.len);
+        ctx.stroke();
+
+        shootingStar.x += shootingStar.speed;
+        shootingStar.y += shootingStar.speed;
+        shootingStar.opacity -= 0.01;
+
+        if (shootingStar.opacity <= 0 || shootingStar.y > canvas.height) {
+          shootingStar = null;
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+
     !function(){
       function enc(u){
         try{return btoa(encodeURIComponent(u)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=/g,"")}
@@ -218,7 +211,7 @@
         if(/\.|^localhost(:\d+)?$/.test(s)){
           try{new URL("https://"+s);return"https://"+s}catch(e){}
         }
-        return"https://duckduckgo.com/?q="+encodeURIComponent(s);
+        return"https://duckduckgo.com"+encodeURIComponent(s);
       }
       document.getElementById("f").onsubmit=function(e){
         e.preventDefault();
@@ -229,57 +222,5 @@
       };
     }();
   </script>
-</body>
-</html>
-
-
-
-    <script>
-        const canvas = document.getElementById('starfield');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        const numStars = 400;
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        for (let i = 0; i < numStars; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 1.5,
-                opacity: Math.random()
-            });
-        }
-
-        function draw() {
-           
-            const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
-            grad.addColorStop(0, '#050a14');
-            grad.addColorStop(1, '#000');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-       
-            stars.forEach(star => {
-                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-                ctx.fill();
-
-        
-                star.opacity += (Math.random() - 0.5) * 0.05;
-                if (star.opacity < 0.1) star.opacity = 0.1;
-                if (star.opacity > 1) star.opacity = 1;
-            });
-
-            requestAnimationFrame(draw);
-        }
-        draw();
-    </script>
 </body>
 </html>
